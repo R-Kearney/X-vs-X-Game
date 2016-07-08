@@ -115,13 +115,13 @@ for ($i = 0; $i < 3; $i++){
 		$gameOver = 1;
 	}
 }
-// Check for Diagonal
-if($row0[0] == 1 || $row0[2] == 1){
-	if($row2[0] == 1 || $row2[2] == 1){
-		if($row1[1] == 1) {
-			$gameOver = 1;
-		}
-	}
+// Check for Diagonal Right -> Left
+if($row0[2] == 1 && $row2[0] == 1 && $row1[1] == 1){
+	$gameOver = 1;
+}
+// Check for Diagonal Left -> Right
+if($row0[0] == 1 && $row2[2] == 1 && $row1[1] == 1){
+	$gameOver = 1;
 }
 // Gets next player
 $sql = "SELECT * FROM `moves` WHERE Row=3 AND Col=3";
