@@ -50,6 +50,7 @@ Player INT(6) NULL
 )";
 $conn->query($sql);
 
+// Fill the Database
 for ($k = 0; $k < 3; $k++){
 		for ($i = 0; $i < 3; $i++){
 			$sql = "INSERT INTO Moves (Row, Col, Clicked)
@@ -57,11 +58,12 @@ for ($k = 0; $k < 3; $k++){
 			$conn->query($sql);
 		}
 }
+// Set initial player to 1
 $sql = "INSERT INTO Moves (Row, Col, Clicked, Player)
 			VALUES ('3', '3', 'O', '1' )";
 			$conn->query($sql);
 			
-header('Refresh: 0;url=/server/game.php');
+header('Refresh: 0;url=/server/game.php'); // Redirect after database is made
 
 $conn->close();
 ?>

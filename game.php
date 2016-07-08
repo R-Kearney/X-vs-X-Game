@@ -45,7 +45,6 @@ $row2 = array(0,0,0);
 $gameOver = 0; 
 $boxes = 9; // default
 $player = 1;
-$lastPlayer = 1;
 
 
 // Create connection
@@ -54,7 +53,6 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } 
-
 
 
 // Update Database
@@ -93,18 +91,17 @@ if ($conn->connect_error) {
 // Check for a win
 for ($k = 0; $k < 3; $k++){
 	echo("<tr>");
-		for ($i = 0; $i < 3; $i++){
-			$sql = "SELECT * FROM `moves` WHERE Row=$k AND Col=$i";
-			$result = $conn->query($sql);
-			if ($result->num_rows > 0) {
-				while ($tableData = $result->fetch_assoc()){
-					if ($tableData["Clicked"] == "X"){
-						${"row" . $k}[$i] = 1;
-					}
-					
+	for ($i = 0; $i < 3; $i++){
+		$sql = "SELECT * FROM `moves` WHERE Row=$k AND Col=$i";
+		$result = $conn->query($sql);
+		if ($result->num_rows > 0) {
+			while ($tableData = $result->fetch_assoc()){
+				if ($tableData["Clicked"] == "X"){
+					${"row" . $k}[$i] = 1;
 				}
 			}
 		}
+	}
 }
 // Check for 3 Across
 for ($k = 0; $k < 3; $k++){
@@ -126,7 +123,7 @@ if($row0[0] == 1 || $row0[2] == 1){
 		}
 	}
 }
-// Print the Table
+// Gets next player
 $sql = "SELECT * FROM `moves` WHERE Row=3 AND Col=3";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
@@ -134,39 +131,45 @@ if ($result->num_rows > 0) {
 		$player = $tableData["Player"];
 	}
 }
-	
+
+// Print the Table	
 for ($k = 0; $k < 3; $k++){
 	echo("<tr>");
-		for ($i = 0; $i < 3; $i++){
-			echo("<td> " );
-			if($gameOver != 1){
-				echo("<a href=\"/server/game.php?row=" . $k . "&col=" . $i . "&player=" . $player . "\"  > ");
-			}
-			$sql = "SELECT * FROM `moves` WHERE Row=$k AND Col=$i";
-			$result = $conn->query($sql);
-			if ($result->num_rows > 0) {
-				while ($tableData = $result->fetch_assoc()){
-					echo($tableData["Clicked"]);
-				}
-			}
-			if($gameOver != 1){
-				echo("</a>");
-			}
-			echo(" </td>" );
+	for ($i = 0; $i < 3; $i++){
+		echo("<td> " );
+		if($gameOver != 1){
+			echo("<a href=\"/server/game.php?row=" . $k . "&col=" . $i . "&player=" . $player . "\"  > ");
 		}
+		$sql = "SELECT * FROM `moves` WHERE Row=$k AND Col=$i";
+		$result = $conn->query($sql);
+		if ($result->num_rows > 0) {
+			while ($tableData = $result->fetch_assoc()){
+				echo($tableData["Clicked"]);
+			}
+		}
+		if($gameOver != 1){
+			echo("</a>");
+		}
+		echo(" </td>" );
+	}
 	echo("</tr> ");
 }
 echo("</table>");
 
 $conn->close();
+
+// Check if the Game is Over
 if ($gameOver == 1 ){
-	echo("<h1>Player " . $lastPlayer . " Wins </h1>");
+	if ($player == 1 ){
+		echo("<h1>Player 2 Wins </h1>");
+	} else {
+		echo("<h1>Player 1 Wins </h1>");
+	}
 }
-header('Refresh: 2;url=/server/game.php');
+header('Refresh: 2;url=/server/game.php'); // Reload the page every 2 Seconds
 ?>
 <br></br>
 <br></br>
 <a href="/server/newGame.php" ><input class="button" type="submit" value="New Game"> </a>
-
 </body>
 </html>
