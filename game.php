@@ -160,7 +160,7 @@ $conn->close();
 
 // Check if the Game is Over
 if ($gameOver == 1 ){
-	if ($player == 1 ){
+	if ($player == 2 ){
 		echo("<h1>Player 2 Wins </h1>");
 	} else {
 		echo("<h1>Player 1 Wins </h1>");
