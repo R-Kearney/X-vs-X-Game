@@ -3,7 +3,7 @@ Alternate Rules to X's and O's Game.
 <br></br>
 Written In PHP, MYSQL, HTML, CSS
 <br></br>
-<h3>To play:</h3?
+<h3>To play:</h3>
 Install a webserver like Wamp (must support PHP and have a MySQL database).
 
 Navigate to newGame.php on the server.
